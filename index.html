@@ -21,7 +21,7 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       max-width: 500px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     input, select {
@@ -46,13 +46,39 @@
 
     button:hover { background: #c0392b; }
 
-    .bug-list { max-width: 500px; }
+    .filters {
+      max-width: 500px;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .filter-btn {
+      flex: 1;
+      background: white;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      width: auto;
+    }
+
+    .filter-btn.active {
+      background: #e74c3c;
+      color: white;
+      border-color: #e74c3c;
+    }
 
     .bug-count {
       font-size: 13px;
       color: #888;
       margin-bottom: 12px;
+      max-width: 500px;
     }
+
+    .bug-list { max-width: 500px; }
 
     .bug-item {
       background: white;
@@ -141,11 +167,19 @@
     <button onclick="addBug()">Add Bug</button>
   </div>
 
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterBugs('all', this)">All</button>
+    <button class="filter-btn" onclick="filterBugs('open', this)">Open</button>
+    <button class="filter-btn" onclick="filterBugs('fixed', this)">Fixed</button>
+    <button class="filter-btn" onclick="filterBugs('high', this)">High Priority</button>
+  </div>
+
   <div class="bug-count" id="bugCount">No bugs reported yet</div>
   <div class="bug-list" id="bugList"></div>
 
   <script>
     let bugs = [];
+    let currentFilter = 'all';
 
     function addBug() {
       const title = document.getElementById('bugTitle').value.trim();
@@ -182,6 +216,13 @@
       renderBugs();
     }
 
+    function filterBugs(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBugs();
+    }
+
     function renderBugs() {
       const list = document.getElementById('bugList');
       const count = document.getElementById('bugCount');
@@ -190,12 +231,17 @@
       const open = bugs.filter(b => !b.fixed).length;
       count.textContent = `Total: ${bugs.length} | Open: ${open} | Fixed: ${fixed}`;
 
-      if (bugs.length === 0) {
-        list.innerHTML = '<div class="empty">No bugs reported yet!</div>';
+      let filtered = bugs;
+      if (currentFilter === 'open') filtered = bugs.filter(b => !b.fixed);
+      if (currentFilter === 'fixed') filtered = bugs.filter(b => b.fixed);
+      if (currentFilter === 'high') filtered = bugs.filter(b => b.severity === 'high');
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty">No bugs found!</div>';
         return;
       }
 
-      list.innerHTML = bugs.map(bug => `
+      list.innerHTML = filtered.map(bug => `
         <div class="bug-item ${bug.fixed ? 'fixed' : ''}">
           <span class="bug-title">${bug.title}</span>
           <span class="bug-severity ${bug.severity}">${bug.severity}</span>
