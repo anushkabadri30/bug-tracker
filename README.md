@@ -22,10 +22,5 @@ Open `index.html` in your browser to run locally.
 1. Clone the repo
 
 ## details
-(base) anushka@anushkas-MacBook-Air bug-tracker % git add .
-(base) anushka@anushkas-MacBook-Air bug-tracker % git commit -m "I built a bug tracker from scratch using HTML, CSS and JavaScript. It has full CRUD functionality — create, read, update and delete — with filtering and status management."
-On branch main
-Your branch is up to date with 'origin/main'.
+I built a bug tracker from scratch using HTML, CSS and JavaScript. It has full CRUD functionality — create, read, update and delete — with filtering and status management."
 
-nothing to commit, working tree clean
-(base) anushka@anushkas-MacBook-Air bug-tracker % 
