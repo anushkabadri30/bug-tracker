@@ -21,6 +21,6 @@ Open `index.html` in your browser to run locally.
 ##  How to Run
 1. Clone the repo
 
-## details
-I built a bug tracker from scratch using HTML, CSS and JavaScript. It has full CRUD functionality — create, read, update and delete — with filtering and status management."
+## Details
+I built a bug tracker from scratch using HTML, CSS and JavaScript. It has full CRUD functionality — create, read, update and delete — with filtering and status management.
 
