@@ -48,6 +48,12 @@
 
     .bug-list { max-width: 500px; }
 
+    .bug-count {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
     .bug-item {
       background: white;
       padding: 16px;
@@ -57,12 +63,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
+    }
+
+    .bug-item.fixed {
+      opacity: 0.5;
+      text-decoration: line-through;
     }
 
     .bug-title {
       font-size: 15px;
       font-weight: bold;
       color: #333;
+      flex: 1;
     }
 
     .bug-severity {
@@ -76,11 +89,33 @@
     .medium { background: #fef9e7; color: #d4ac0d; }
     .high { background: #fdecea; color: #e74c3c; }
 
-    .bug-count {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 12px;
+    .actions { display: flex; gap: 6px; }
+
+    .btn-fix {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      width: auto;
     }
+
+    .btn-fix:hover { background: #1e8449; }
+
+    .btn-delete {
+      background: #95a5a6;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .btn-delete:hover { background: #7f8c8d; }
 
     .empty {
       text-align: center;
@@ -124,7 +159,8 @@
       const bug = {
         id: Date.now(),
         title,
-        severity
+        severity,
+        fixed: false
       };
 
       bugs.push(bug);
@@ -134,12 +170,25 @@
       document.getElementById('bugSeverity').value = '';
     }
 
+    function fixBug(id) {
+      bugs = bugs.map(bug =>
+        bug.id === id ? { ...bug, fixed: !bug.fixed } : bug
+      );
+      renderBugs();
+    }
+
+    function deleteBug(id) {
+      bugs = bugs.filter(bug => bug.id !== id);
+      renderBugs();
+    }
+
     function renderBugs() {
       const list = document.getElementById('bugList');
       const count = document.getElementById('bugCount');
 
-      // Update count
-      count.textContent = `Total bugs: ${bugs.length}`;
+      const fixed = bugs.filter(b => b.fixed).length;
+      const open = bugs.filter(b => !b.fixed).length;
+      count.textContent = `Total: ${bugs.length} | Open: ${open} | Fixed: ${fixed}`;
 
       if (bugs.length === 0) {
         list.innerHTML = '<div class="empty">No bugs reported yet!</div>';
@@ -147,9 +196,15 @@
       }
 
       list.innerHTML = bugs.map(bug => `
-        <div class="bug-item">
+        <div class="bug-item ${bug.fixed ? 'fixed' : ''}">
           <span class="bug-title">${bug.title}</span>
           <span class="bug-severity ${bug.severity}">${bug.severity}</span>
+          <div class="actions">
+            <button class="btn-fix" onclick="fixBug(${bug.id})">
+              ${bug.fixed ? 'Reopen' : 'Fix'}
+            </button>
+            <button class="btn-delete" onclick="deleteBug(${bug.id})">Delete</button>
+          </div>
         </div>
       `).join('');
     }
