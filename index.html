@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bug Tracker</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: Arial, sans-serif;
@@ -17,10 +13,7 @@
       padding: 40px;
     }
 
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
+    h1 { color: #333; margin-bottom: 20px; }
 
     .form-box {
       background: white;
@@ -51,13 +44,9 @@
       width: 100%;
     }
 
-    button:hover {
-      background: #c0392b;
-    }
+    button:hover { background: #c0392b; }
 
-    .bug-list {
-      max-width: 500px;
-    }
+    .bug-list { max-width: 500px; }
 
     .bug-item {
       background: white;
@@ -86,6 +75,19 @@
     .low { background: #d5f5e3; color: #1e8449; }
     .medium { background: #fef9e7; color: #d4ac0d; }
     .high { background: #fdecea; color: #e74c3c; }
+
+    .bug-count {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #aaa;
+      font-size: 14px;
+      padding: 30px;
+    }
   </style>
 </head>
 <body>
@@ -104,33 +106,52 @@
     <button onclick="addBug()">Add Bug</button>
   </div>
 
+  <div class="bug-count" id="bugCount">No bugs reported yet</div>
   <div class="bug-list" id="bugList"></div>
 
   <script>
+    let bugs = [];
+
     function addBug() {
-      const title = document.getElementById('bugTitle').value;
+      const title = document.getElementById('bugTitle').value.trim();
       const severity = document.getElementById('bugSeverity').value;
 
-      // Check fields are not empty
       if (!title || !severity) {
         alert('Please enter a bug title and severity!');
         return;
       }
 
-      // Create bug card
-      const bugItem = document.createElement('div');
-      bugItem.className = 'bug-item';
-      bugItem.innerHTML = `
-        <span class="bug-title">${title}</span>
-        <span class="bug-severity ${severity}">${severity}</span>
-      `;
+      const bug = {
+        id: Date.now(),
+        title,
+        severity
+      };
 
-      // Add to list
-      document.getElementById('bugList').appendChild(bugItem);
+      bugs.push(bug);
+      renderBugs();
 
-      // Clear inputs
       document.getElementById('bugTitle').value = '';
       document.getElementById('bugSeverity').value = '';
+    }
+
+    function renderBugs() {
+      const list = document.getElementById('bugList');
+      const count = document.getElementById('bugCount');
+
+      // Update count
+      count.textContent = `Total bugs: ${bugs.length}`;
+
+      if (bugs.length === 0) {
+        list.innerHTML = '<div class="empty">No bugs reported yet!</div>';
+        return;
+      }
+
+      list.innerHTML = bugs.map(bug => `
+        <div class="bug-item">
+          <span class="bug-title">${bug.title}</span>
+          <span class="bug-severity ${bug.severity}">${bug.severity}</span>
+        </div>
+      `).join('');
     }
   </script>
 
