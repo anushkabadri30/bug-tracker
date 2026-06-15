@@ -1,14 +1,22 @@
-# Bug Tracker
+#  Bug Tracker
 
 A web app to log, track and manage software bugs efficiently.
 
-## Features
-- Add bugs with title and severity
-- Mark bugs as fixed
-- Filter by status
+##  Live Demo
+Open `index.html` in your browser to run locally.
 
-## Tech Stack
-- HTML, CSS, JavaScript
+##  Features
+- Report bugs with title and severity level
+- View all bugs in a clean list
+- Mark bugs as fixed or reopen them
+- Delete resolved bugs
+- Filter by All / Open / Fixed / High Priority
+- Live bug counter showing total, open and fixed
 
-## Status
-🚧 In progress — Day 1
+##  Tech Stack
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
+
+##  How to Run
+1. Clone the repo
