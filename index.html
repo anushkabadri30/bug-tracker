@@ -28,6 +28,7 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       max-width: 500px;
+      margin-bottom: 30px;
     }
 
     input, select {
@@ -53,6 +54,38 @@
     button:hover {
       background: #c0392b;
     }
+
+    .bug-list {
+      max-width: 500px;
+    }
+
+    .bug-item {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bug-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .bug-severity {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .low { background: #d5f5e3; color: #1e8449; }
+    .medium { background: #fef9e7; color: #d4ac0d; }
+    .high { background: #fdecea; color: #e74c3c; }
   </style>
 </head>
 <body>
@@ -68,8 +101,38 @@
       <option value="medium">Medium</option>
       <option value="high">High</option>
     </select>
-    <button onclick="alert('We will add this tomorrow!')">Add Bug</button>
+    <button onclick="addBug()">Add Bug</button>
   </div>
+
+  <div class="bug-list" id="bugList"></div>
+
+  <script>
+    function addBug() {
+      const title = document.getElementById('bugTitle').value;
+      const severity = document.getElementById('bugSeverity').value;
+
+      // Check fields are not empty
+      if (!title || !severity) {
+        alert('Please enter a bug title and severity!');
+        return;
+      }
+
+      // Create bug card
+      const bugItem = document.createElement('div');
+      bugItem.className = 'bug-item';
+      bugItem.innerHTML = `
+        <span class="bug-title">${title}</span>
+        <span class="bug-severity ${severity}">${severity}</span>
+      `;
+
+      // Add to list
+      document.getElementById('bugList').appendChild(bugItem);
+
+      // Clear inputs
+      document.getElementById('bugTitle').value = '';
+      document.getElementById('bugSeverity').value = '';
+    }
+  </script>
 
 </body>
 </html>
